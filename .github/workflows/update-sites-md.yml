@@ -3,10 +3,10 @@ name: Update sites.md
 on:
   push:
     branches:
-      - main  # You can change this back to 'paths: - sites.yaml' later
+      - main
 
 permissions:
-  contents: write  # Allows the workflow to push commits
+  contents: write
 
 jobs:
   update-markdown:
@@ -39,4 +39,5 @@ jobs:
           git add sites.md
           git commit -m "Update sites.md" || echo "No changes to commit"
           git push origin HEAD
+
 
