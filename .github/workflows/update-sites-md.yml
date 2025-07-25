@@ -34,3 +34,4 @@ jobs:
           git add sites.md
           git commit -m "Update sites.md" || echo "No changes to commit"
           git push https://x-access-token:${PAT}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
+
