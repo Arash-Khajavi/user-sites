@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - sites.yaml
+      - scripts/generate_sites_md.py
+      
       
 
 permissions:
