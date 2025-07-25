@@ -3,19 +3,18 @@ name: Update sites.md
 on:
   push:
     paths:
-      - 'sites.yaml'
-      - '.github/workflows/update-sites-md.yml'
-      - 'scripts/generate_sites_md.py'
+      - sites.yaml
 
 jobs:
-  build:
+  update-markdown:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -23,15 +22,16 @@ jobs:
         run: pip install pyyaml
 
       - name: Generate sites.md
-        run: python scripts/generate_sites_md.py
+        run: python .github/scripts/generate_sites_md.py
 
       - name: Commit and push changes
         env:
           PAT: ${{ secrets.PAT }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add sites.md
-          git commit -m "Update sites.md" || echo "No changes to commit"
-          git push https://x-access-token:${PAT}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
-
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Set remote URL with access token
+          git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}
+          
+          # Show remote to verify token is being used
