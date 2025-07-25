@@ -17,7 +17,7 @@ Welcome to the **User Sites Hub** — a place where developers and creators can 
 
 | Owner | Website | Description |
 |-------|---------|-------------|
-| [Arash_Khajavi](https://allchatbotsyouwant.onrender.com/) | A Python-powered personal website featuring LLM which is associated with various sources. |
+| [Arash_Khajavi] | (https://allchatbotsyouwant.onrender.com/) | A Python-powered personal website featuring LLM which is associated with various sources. |
 
 ---
 
@@ -28,4 +28,4 @@ Welcome to the **User Sites Hub** — a place where developers and creators can 
 3. Submit a pull request
 
 ```markdown
-| [@YourGitHubHandle](https://github.com/YourUsername) | [yourwebsite.com](https://yourwebsite.com) | A short description of your site. |
+| [@YourGitHubHandle] | [(https://yourwebsite.com) | A short description of your site. |
