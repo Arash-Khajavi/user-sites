@@ -3,7 +3,8 @@ name: Update sites.md
 on:
   push:
     branches:
-      - main
+      - sites.yaml
+      
 
 permissions:
   contents: write
@@ -15,6 +16,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: List repo files (debug)
+        run: ls -R
+
+      - name: List .github/scripts files (debug)
+        run: ls -l .github/scripts || echo "Folder not found"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -39,5 +46,3 @@ jobs:
           git add sites.md
           git commit -m "Update sites.md" || echo "No changes to commit"
           git push origin HEAD
-
-
