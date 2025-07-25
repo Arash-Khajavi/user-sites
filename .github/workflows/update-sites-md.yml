@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.3'
+          python-version: '3.12'
 
       - name: Install PyYAML
         run: pip install pyyaml
@@ -25,10 +25,12 @@ jobs:
       - name: Generate sites.md
         run: python scripts/generate_sites_md.py
 
-      - name: Commit changes
+      - name: Commit and push changes
+        env:
+          PAT: ${{ secrets.PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add sites.md
           git commit -m "Update sites.md" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${PAT}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
