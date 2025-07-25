@@ -2,8 +2,11 @@ name: Update sites.md
 
 on:
   push:
-    paths:
-      - sites.yaml
+    branches:
+      - main  # You can change this back to 'paths: - sites.yaml' later
+
+permissions:
+  contents: write  # Allows the workflow to push commits
 
 jobs:
   update-markdown:
@@ -30,8 +33,10 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          
-          # Set remote URL with access token
+
           git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}
-          
-          # Show remote to verify token is being used
+
+          git add sites.md
+          git commit -m "Update sites.md" || echo "No changes to commit"
+          git push origin HEAD
+
