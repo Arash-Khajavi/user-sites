@@ -3,14 +3,13 @@ name: Update sites.md
 on:
   push:
     paths:
-      - sites.yaml
-  workflow_dispatch:
+      - 'sites.yaml'
+      - '.github/workflows/update-sites-md.yml'
+      - 'scripts/generate_sites_md.py'
 
 jobs:
-  update-sites-md:
+  build:
     runs-on: ubuntu-latest
-    name: Generate sites.md from sites.yaml
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -18,19 +17,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: '3.12.3'
 
       - name: Install PyYAML
         run: pip install pyyaml
 
-      - name: Generate sites.md from sites.yaml
-        run: |
-          python scripts/generate_sites_md.py
+      - name: Generate sites.md
+        run: python scripts/generate_sites_md.py
 
-      - name: Commit and push if changed
+      - name: Commit changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add sites.md
-          git diff --cached --quiet || git commit -m "Update sites.md from sites.yaml"
+          git commit -m "Update sites.md" || echo "No changes to commit"
           git push
