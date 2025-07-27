@@ -34,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ARASH }}
         run: |
           git config --global user.name "Arash Khajavi"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.email "Arash-Khajavi@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${ARASH}@github.com/${{ github.repository }}
           git add sites.md
           if git diff --cached --quiet; then
