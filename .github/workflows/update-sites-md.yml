@@ -9,6 +9,9 @@ on:
       - 'scripts/generate_sites_md.py'
       - '.github/workflows/update-sites-md.yml'
 
+permissions:
+  contents: write  # <-- This allows the workflow to push
+
 jobs:
   update-sites-md:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
 
       - name: Commit and push changes
         env:
-          ARASH: ${{ secrets.ARASH }}
+          GITHUB_TOKEN: ${{ secrets.ARASH }}
         run: |
           git config --global user.name "Arash Khajavi"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
