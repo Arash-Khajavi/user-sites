@@ -4,7 +4,7 @@ A fun, open-source directory where developers and creatives showcase their perso
 
 ## 🚀 What is this?
 
-**user-sites** is a community-powered collection of personal websites, portfolios, and creative web spaces. Inspired by projects like [public-apis](https://github.com/public-apis/public-apis), this repository helps developers and creatives promote their work and discover each other.
+**user-sites** is a community-powered collection of personal websites, portfolios, and creative web spaces. this repository helps developers and creatives promote their work and discover each other.
 
 Whether you're a developer, designer, blogger, or hobbyist — you can share your site and explore others'.
 
