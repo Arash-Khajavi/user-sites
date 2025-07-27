@@ -1,59 +1,46 @@
 import yaml
-import re
-import sys
 import requests
+import sys
+from urllib.parse import urlparse
 
-def is_valid_url(url):
-    return re.match(r'^https://[^\s]+$', url) is not None
+with open("sites.yaml", "r") as f:
+    data = yaml.safe_load(f)
 
-def is_local_url(url):
-    return any(local in url for local in ['localhost', '127.0.0.1', '0.0.0.0'])
+errors = []
+seen_urls = set()
 
-def is_deployed(url):
+for entry in data.get("sites", []):
+    url = entry.get("url", "").strip()
+
+    # Check 1: starts with https
+    if not url.startswith("https://"):
+        errors.append(f"{url} does not start with https://")
+
+    # Check 2: disallow localhost or 127.0.0.1
+    parsed = urlparse(url)
+    if parsed.hostname in ("127.0.0.1", "localhost"):
+        errors.append(f"{url} points to localhost")
+
+    # Check 3: is it a duplicate?
+    if url in seen_urls:
+        errors.append(f"{url} is duplicated")
+    else:
+        seen_urls.add(url)
+
+    # Check 4: try to access site
     try:
-        response = requests.head(url, allow_redirects=True, timeout=5)
-        return response.status_code < 400
-    except requests.RequestException:
-        return False
+        response = requests.get(url, timeout=5)
+        if response.status_code >= 400:
+            errors.append(f"{url} returned HTTP {response.status_code}")
+    except Exception as e:
+        errors.append(f"{url} could not be reached: {str(e)}")
 
-def main():
-    with open("sites.yaml", "r", encoding="utf-8") as f:
-        try:
-            data = yaml.safe_load(f)
-        except yaml.YAMLError as e:
-            print(f"YAML Error: {e}")
-            sys.exit(1)
+# Final report
+if errors:
+    for err in errors:
+        print("❌", err)
+    sys.exit(1)
 
-    if not isinstance(data, list):
-        print("❌ sites.yaml must be a list of site entries.")
-        sys.exit(1)
+print("✅ All sites validated successfully.")
 
-    errors = []
-    for i, entry in enumerate(data):
-        if not isinstance(entry, dict):
-            errors.append(f"❌ Entry #{i + 1} is not a dictionary.")
-            continue
-
-        name = entry.get("name")
-        url = entry.get("url")
-
-        if not name or not isinstance(name, str):
-            errors.append(f"❌ Entry #{i + 1}: 'name' is missing or invalid.")
-
-        if not url or not is_valid_url(url):
-            errors.append(f"❌ Entry #{i + 1}: 'url' is missing or must start with https://")
-        elif is_local_url(url):
-            errors.append(f"❌ Entry #{i + 1}: 'url' points to a local address and is not allowed.")
-        elif not is_deployed(url):
-            errors.append(f"❌ Entry #{i + 1}: '{url}' is not reachable (site not deployed?).")
-
-    if errors:
-        for error in errors:
-            print(error)
-        sys.exit(1)
-
-    print("✅ sites.yaml passed validation.")
-
-if __name__ == "__main__":
-    main()
 
