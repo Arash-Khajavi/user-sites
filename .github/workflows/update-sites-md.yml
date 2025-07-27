@@ -25,6 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: pip install pyyaml
+      - name: Validate sites.yaml
+        run: python scripts/validate_sites_yaml.py
 
       - name: Generate sites.md
         run: python scripts/generate_sites_md.py
