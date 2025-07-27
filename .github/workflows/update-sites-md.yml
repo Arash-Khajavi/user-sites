@@ -30,13 +30,13 @@ jobs:
       - name: Generate sites.md
         run: python scripts/generate_sites_md.py
 
-      - name: Commit and push changes
+            - name: Commit and push changes
         env:
-          GITHUB_TOKEN: ${{ secrets.ARASH }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${ARASH}@github.com/${{ github.repository }}
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           git add sites.md
           git diff --cached --quiet || git commit -m "Update sites.md"
           git push origin HEAD
