@@ -30,7 +30,7 @@ jobs:
       - name: Generate sites.md
         run: python scripts/generate_sites_md.py
 
-            - name: Commit and push changes
+      - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
