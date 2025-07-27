@@ -1,9 +1,20 @@
 import yaml
 import re
 import sys
+import requests
 
 def is_valid_url(url):
     return re.match(r'^https://[^\s]+$', url) is not None
+
+def is_local_url(url):
+    return any(local in url for local in ['localhost', '127.0.0.1', '0.0.0.0'])
+
+def is_deployed(url):
+    try:
+        response = requests.head(url, allow_redirects=True, timeout=5)
+        return response.status_code < 400
+    except requests.RequestException:
+        return False
 
 def main():
     with open("sites.yaml", "r", encoding="utf-8") as f:
@@ -31,6 +42,10 @@ def main():
 
         if not url or not is_valid_url(url):
             errors.append(f"❌ Entry #{i + 1}: 'url' is missing or must start with https://")
+        elif is_local_url(url):
+            errors.append(f"❌ Entry #{i + 1}: 'url' points to a local address and is not allowed.")
+        elif not is_deployed(url):
+            errors.append(f"❌ Entry #{i + 1}: '{url}' is not reachable (site not deployed?).")
 
     if errors:
         for error in errors:
@@ -41,3 +56,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
