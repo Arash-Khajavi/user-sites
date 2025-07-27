@@ -7,7 +7,7 @@ on:
     paths:
       - 'sites.yaml'
       - 'scripts/generate_sites_md.py'
-      # - '.github/workflows/update-sites-md.yml' # Optional
+      - '.github/workflows/update-sites-md.yml'
 
 jobs:
   update-sites-md:
@@ -15,13 +15,13 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3 # Consider pinning to a full version or SHA
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v4 # Consider pinning
+        uses: actions/setup-python@v4
 
       - name: Install dependencies
-        run: pip install pyyaml # Or use requirements.txt for more packages
+        run: pip install pyyaml
 
       - name: Generate sites.md
         run: python scripts/generate_sites_md.py
