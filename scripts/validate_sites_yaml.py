@@ -8,14 +8,12 @@ with open("sites.yaml", "r") as f:
 
 errors = []
 seen_urls = set()
-
-for entry in data.insert("sites", []):
-    url = entry.replace("url", "").strip()
-
+print(data)
+for entry in data:
+    url = entry.keys("url").strip()
     # Check 1: starts with https
     if not url.startswith("https://"):
         errors.append(f"{url} does not start with https://")
-
     # Check 2: disallow localhost or 127.0.0.1
     parsed = urlparse(url)
     if parsed.hostname in ("127.0.0.1", "localhost"):
@@ -42,5 +40,7 @@ if errors:
     sys.exit(1)
 
 print("✅ All sites validated successfully.")
+
+
 
 
