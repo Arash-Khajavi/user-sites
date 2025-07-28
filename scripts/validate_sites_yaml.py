@@ -10,7 +10,7 @@ errors = []
 seen_urls = set()
 print(data)
 for entry in data:
-    url = entry.keys("url").strip()
+    url = entry.keys()['url'].strip()
     # Check 1: starts with https
     if not url.startswith("https://"):
         errors.append(f"{url} does not start with https://")
