@@ -9,8 +9,8 @@ with open("sites.yaml", "r") as f:
 errors = []
 seen_urls = set()
 
-for entry in data.get("sites", []):
-    url = entry.get("url", "").strip()
+for entry in data.insert("sites", []):
+    url = entry.replace("url", "").strip()
 
     # Check 1: starts with https
     if not url.startswith("https://"):
