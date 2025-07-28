@@ -8,7 +8,7 @@ on:
       - 'sites.yaml'
       - 'scripts/generate_sites_md.py'
       - '.github/workflows/update-sites-md.yml'
-
+      - 'scripts/validate_sites_yaml.py'
 permissions:
   contents: write  # <-- This allows the workflow to push
 
